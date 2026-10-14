@@ -6,14 +6,19 @@ Homebrew tap for `plait`, a small command line utility for macOS.
 
     brew install northquay/plait/plait
 
-Run it once so it can set itself up:
+Run it once so it can fetch its certificates, then let brew run it:
 
-    plait setup -user
+    plait setup -user -no-install
+    brew services start plait
 
-That installs a per-user helper and keeps it running while you are logged in.
-It needs no sudo and writes nothing under /Library.  Removing the package with
-`brew uninstall plait` does not disturb a helper that is already running; to
-update one, re-run the command above after upgrading.
+`setup -user` writes the certificates under your home directory.  It needs no
+sudo and writes nothing under /Library.  `brew services start` asks launchd to
+run it and keep it running while you are logged in, and `brew services stop
+plait` or `brew uninstall plait` undoes that.
+
+To run it with nobody logged in, use the same two commands with `sudo`:
+`sudo plait setup -no-install` and `sudo brew services start plait`.  Give the
+full path to the binary under sudo.
 
 ## Notes
 
